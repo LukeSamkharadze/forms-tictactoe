@@ -32,5 +32,10 @@ namespace TTT_PCL_TEST
             Board = Board
         }
         );
+        
+        public static void SubscribeTo_onEnd()
+        {
+            Game.onEnd += (s, e) => Console.WriteLine("Invoked");
+        }
     }
 }

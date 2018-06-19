@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TTT_PCL.Abstractions.Player;
 using TTT_PCL.Abstractions.Board;
 using TTT_PCL.Abstractions.Game;
-using TTT_PCL.Abstractions;
+using TTT_PCL.Abstractions.Item;
 using TTT_PCL.Extentions;
 using TTT_PCL.Other;
 
@@ -109,15 +109,20 @@ namespace TTT_PCL.Implementations
             return null;
         }
 
-        public void Place(IItem item)
+        public bool Place(IItem item)
         {
-            Board.Place(item);
-            CheckWinner();
+            if(Board.Place(item))
+            {
+                CheckWinner();
+                return true;
+            }
+            return false;
         }
-        public void Take(SCordinate2D cordinate2D)
+        public IItem Take(SCordinate2D cordinate2D)
         {
-            Board.Take(cordinate2D);
+            IItem item= Board.Take(cordinate2D);
             CheckWinner();
+            return item;
         }
 
         public CGame(CGameInitializer gameInitializer)

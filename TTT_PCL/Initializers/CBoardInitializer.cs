@@ -1,6 +1,6 @@
 ﻿using System;
 
-using TTT_PCL.Abstractions;
+using TTT_PCL.Abstractions.Item;
 
 namespace TTT_PCL.Initializers
 {

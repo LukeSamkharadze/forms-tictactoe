@@ -5,7 +5,7 @@ using TTT_PCL.Abstractions.Player;
 
 namespace TTT_PCL.Abstractions.Game
 {
-    interface IGame
+    public interface IGame
     {
         IList<IPlayer> Players { get; }
         IPlayer Winner { get; }

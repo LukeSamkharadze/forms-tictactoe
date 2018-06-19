@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TTT_PCL.Abstractions;
+using TTT_PCL.Abstractions.Player;
 using TTT_PCL.Implementations;
 
 using TTT_PCL.Initializers;

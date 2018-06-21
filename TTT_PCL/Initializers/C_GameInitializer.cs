@@ -11,7 +11,7 @@ namespace TTT_PCL.Initializers
     {
         public IList<I_Player> Players { get; set; }
 
-        public S_BaseGameInfo BaseGameInfo { get; set; }
+        public S_TTTMinToWin MinToWin { get; set; }
 
         public I_Board Board { get; set; }
 

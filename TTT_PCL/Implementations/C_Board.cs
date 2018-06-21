@@ -27,6 +27,7 @@ namespace TTT_PCL.Implementations
 
         public I_Item Take(S_Cordinate2D cordinate2D)
         {
+
             return Board[cordinate2D.Y, cordinate2D.X];
         }
 

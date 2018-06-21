@@ -12,7 +12,7 @@ namespace TTT_PCL_TEST
 {
     public static class Data_TEST
     {
-        public static S_BaseGameInfo BaseGameInfo { get; } = new S_BaseGameInfo() { MinToWinHorizontally = 3, MinToWinVertically = 3, MinToWinDiagonally = 3 };
+        public static S_TTTMinToWin MinToWin { get; } = new S_TTTMinToWin() { MinToWinHorizontally = 3, MinToWinVertically = 3, MinToWinDiagonally = 3 };
 
         public static C_Player PlayerX { get; } = new C_Player(new C_PlayerInitializer() { Character = 'X' });
         public static C_Player PlayerO { get; } = new C_Player(new C_PlayerInitializer() { Character = 'O' });
@@ -22,20 +22,15 @@ namespace TTT_PCL_TEST
 
         public static C_Board Board = new C_Board(new C_BoardInitializer()
         {
-            Board = new C_Item[,] { { ItemX, ItemX, ItemX }, { ItemO, ItemX, ItemO }, { ItemO, ItemX, ItemO } }
+            Board = new C_Item[3,3]
         });
-
+   
         public static C_Game Game { get; } = new C_Game(new C_GameInitializer()
         {
             Players = new List<I_Player> { PlayerX, PlayerO },
-            BaseGameInfo = BaseGameInfo,
+            MinToWin = MinToWin,
             Board = Board
         }
         );
-        
-        public static void SubscribeTo_onEnd()
-        {
-            Game.onEnd += (s, e) => Console.WriteLine("Invoked");
-        }
     }
 }

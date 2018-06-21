@@ -13,11 +13,11 @@ using TTT_PCL.Extensions;
 
 namespace TTT_PCL.Implementations
 {
-    public class C_Game : I_BoardGame
+    public class C_Game : I_TTT
     {
         public IList<I_Player> Players { get; private set; }
 
-        public S_BaseGameInfo BaseGameInfo { get; private set; }
+        public S_TTTMinToWin MinToWin { get; private set; }
 
         public I_Board Board { get; private set; }
 
@@ -38,74 +38,74 @@ namespace TTT_PCL.Implementations
             //Check Horizontally
             for (int y = 0; y < Board.Board.GetLength(0); y++)
             {
-                for (int x = 0; x <= Board.Board.GetLength(1) - BaseGameInfo.MinToWinHorizontally; x++)
+                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinHorizontally; x++)
                 {
                     counter.SetupValues<I_Player, uint>(Players, 0);
 
-                    for (int i = 0; i < BaseGameInfo.MinToWinHorizontally; i++)
+                    for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
                         counter[Board.Board[y, x + i].Owner]++;
 
                     foreach (var keyValue in counter)
-                        if (keyValue.Value >= BaseGameInfo.MinToWinHorizontally)
+                        if (keyValue.Value >= MinToWin.MinToWinHorizontally)
                         {
-                            onEnd.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
                             return keyValue.Key;
                         }
                 }
             }
 
             //Check Vertically
-            for (int y = 0; y <= Board.Board.GetLength(0) - BaseGameInfo.MinToWinVertically; y++)
+            for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinVertically; y++)
             {
                 for (int x = 0; x < Board.Board.GetLength(1); x++)
                 {
                     counter.SetupValues<I_Player, uint>(Players, 0);
 
-                    for (int i = 0; i < BaseGameInfo.MinToWinVertically; i++)
+                    for (int i = 0; i < MinToWin.MinToWinVertically; i++)
                         counter[Board.Board[y + i, x].Owner]++;
 
                     foreach (var keyValue in counter)
-                        if (keyValue.Value >= BaseGameInfo.MinToWinVertically)
+                        if (keyValue.Value >= MinToWin.MinToWinVertically)
                         {
-                            onEnd.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
                             return keyValue.Key;
                         }
                 }
             }
 
             //Check Diagonally
-            for (int y = 0; y <= Board.Board.GetLength(0) - BaseGameInfo.MinToWinDiagonally; y++)
+            for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinDiagonally; y++)
             {
-                for (int x = 0; x <= Board.Board.GetLength(1) - BaseGameInfo.MinToWinDiagonally; x++)
+                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
                 {
                     counter.SetupValues<I_Player, uint>(Players, 0);
 
-                    for (int i = 0; i < BaseGameInfo.MinToWinDiagonally; i++)
+                    for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
                         counter[Board.Board[y + i, x + i].Owner]++;
 
                     foreach (var keyValue in counter)
-                        if (keyValue.Value >= BaseGameInfo.MinToWinDiagonally)
+                        if (keyValue.Value >= MinToWin.MinToWinDiagonally)
                         {
-                            onEnd.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
                             return keyValue.Key;
                         }
                 }
             }
 
             //Check Diagonally ^
-            for (int y = Board.Board.GetLength(0) - 1; y >= BaseGameInfo.MinToWinDiagonally - 1; y--)
+            for (int y = Board.Board.GetLength(0) - 1; y >= MinToWin.MinToWinDiagonally - 1; y--)
             {
-                for (int x = 0; x <= Board.Board.GetLength(1) - BaseGameInfo.MinToWinDiagonally; x++)
+                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
                 {
                     counter.SetupValues<I_Player, uint>(Players, 0);
 
-                    for (int i = 0; i < BaseGameInfo.MinToWinDiagonally; i++)
+                    for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
                         counter[Board.Board[y - i, x + i].Owner]++;
 
                     foreach (var keyValue in counter)
-                        if (keyValue.Value >= BaseGameInfo.MinToWinDiagonally)
+                        if (keyValue.Value >= MinToWin.MinToWinDiagonally)
                         {
-                            onEnd.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
                             return keyValue.Key;
                         }
                 }
@@ -120,7 +120,7 @@ namespace TTT_PCL.Implementations
                     if (Board.Board[y, x] == null)
                     {
                         isEverythingTaken = false;
-                        return null; ;
+                        return null;
                     }
                 }
             }
@@ -128,7 +128,7 @@ namespace TTT_PCL.Implementations
             if(isEverythingTaken)
             {
                 IsGameEnded = true;
-                onEnd.Invoke(this, new C_GameEndEventArgs() { Winner = null });
+                onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = null });
                 return null;
             }
 
@@ -157,7 +157,7 @@ namespace TTT_PCL.Implementations
         public C_Game(C_GameInitializer gameInitializer)
         {
             Players = gameInitializer.Players;
-            BaseGameInfo = gameInitializer.BaseGameInfo;
+            MinToWin = gameInitializer.MinToWin;
             Board = gameInitializer.Board;
             Winner = gameInitializer.Winner;
             IsGameEnded = gameInitializer.IsGameEnded;

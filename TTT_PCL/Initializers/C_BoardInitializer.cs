@@ -4,8 +4,8 @@ using TTT_PCL.Abstractions.Item;
 
 namespace TTT_PCL.Initializers
 {
-    public class CBoardInitializer
+    public class C_BoardInitializer
     {
-        public IItem[,] Board { get; set; }
+        public I_Item[,] Board { get; set; }
     }
 }

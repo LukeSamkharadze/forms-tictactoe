@@ -5,13 +5,16 @@ using TTT_PCL.Abstractions.Player;
 
 namespace TTT_PCL.Abstractions.Game
 {
-    public interface IGame
+    public interface I_Game
     {
-        IList<IPlayer> Players { get; }
-        IPlayer Winner { get; }
+        IList<I_Player> Players { get; }
+
+        I_Player Winner { get; }
+
+        bool IsGameEnded { get; }
 
         event EventHandler onEnd;
 
-        IPlayer CheckWinner();
+        I_Player CheckWinner();
     }
 }

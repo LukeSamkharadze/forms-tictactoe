@@ -12,22 +12,22 @@ namespace TTT_PCL_TEST
 {
     public static class Data_TEST
     {
-        public static CBaseGameInfo BaseGameInfo { get; } = new CBaseGameInfo() { MinToWinHorizontally = 3, MinToWinVertically = 3, MinToWinDiagonally = 3 };
+        public static S_BaseGameInfo BaseGameInfo { get; } = new S_BaseGameInfo() { MinToWinHorizontally = 3, MinToWinVertically = 3, MinToWinDiagonally = 3 };
 
-        public static CPlayer PlayerX { get; } = new CPlayer(new CPlayerInitializer() { Character = 'X' });
-        public static CPlayer PlayerO { get; } = new CPlayer(new CPlayerInitializer() { Character = 'O' });
+        public static C_Player PlayerX { get; } = new C_Player(new C_PlayerInitializer() { Character = 'X' });
+        public static C_Player PlayerO { get; } = new C_Player(new C_PlayerInitializer() { Character = 'O' });
 
-        public static CItem ItemX { get; } = new CItem(new CItemInitializer() { Owner = PlayerX });
-        public static CItem ItemO { get; } = new CItem(new CItemInitializer() { Owner = PlayerO });
+        public static C_Item ItemX { get; } = new C_Item(new C_ItemInitializer() { Owner = PlayerX });
+        public static C_Item ItemO { get; } = new C_Item(new C_ItemInitializer() { Owner = PlayerO });
 
-        public static CBoard Board = new CBoard(new CBoardInitializer()
+        public static C_Board Board = new C_Board(new C_BoardInitializer()
         {
-            Board = new CItem[,] { { ItemX, ItemX, ItemX }, { ItemO, ItemX, ItemO }, { ItemO, ItemX, ItemO } }
+            Board = new C_Item[,] { { ItemX, ItemX, ItemX }, { ItemO, ItemX, ItemO }, { ItemO, ItemX, ItemO } }
         });
 
-        public static CGame Game { get; } = new CGame(new CGameInitializer()
+        public static C_Game Game { get; } = new C_Game(new C_GameInitializer()
         {
-            Players = new List<IPlayer> { PlayerX, PlayerO },
+            Players = new List<I_Player> { PlayerX, PlayerO },
             BaseGameInfo = BaseGameInfo,
             Board = Board
         }

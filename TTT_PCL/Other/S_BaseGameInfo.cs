@@ -2,7 +2,7 @@
 
 namespace TTT_PCL.Other
 {
-    public struct CBaseGameInfo
+    public struct S_BaseGameInfo
     {
         public int MinToWinHorizontally { get; set; }
         public int MinToWinVertically { get; set; }

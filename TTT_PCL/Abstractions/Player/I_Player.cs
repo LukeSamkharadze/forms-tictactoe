@@ -2,7 +2,7 @@
 
 namespace TTT_PCL.Abstractions.Player
 {
-    public interface IPlayer
+    public interface I_Player
     {
         string Name { get; }
 

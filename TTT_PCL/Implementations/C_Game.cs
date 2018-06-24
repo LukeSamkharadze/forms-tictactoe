@@ -53,7 +53,7 @@ namespace TTT_PCL.Implementations
                     counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
-                        if (Board.Board[y, x + i] != ' ')
+                        if (Board.Board[y, x + i] != '\0')
                             counter[Board.Board[y, x + i]]++;
 
                     foreach (var keyValue in counter)
@@ -73,7 +73,7 @@ namespace TTT_PCL.Implementations
                     counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinVertically; i++)
-                        if (Board.Board[y + i, x] != ' ')
+                        if (Board.Board[y + i, x] != '\0')
                             counter[Board.Board[y + i, x]]++;
 
                     foreach (var keyValue in counter)
@@ -93,7 +93,7 @@ namespace TTT_PCL.Implementations
                     counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
-                        if (Board.Board[y + i, x + i] != ' ')
+                        if (Board.Board[y + i, x + i] != '\0')
                             counter[Board.Board[y + i, x + i]]++;
 
                     foreach (var keyValue in counter)
@@ -113,7 +113,7 @@ namespace TTT_PCL.Implementations
                     counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
-                        if (Board.Board[y - i, x + i] != ' ')
+                        if (Board.Board[y - i, x + i] != '\0')
                             counter[Board.Board[y - i, x + i]]++;
 
                     foreach (var keyValue in counter)
@@ -129,7 +129,7 @@ namespace TTT_PCL.Implementations
             //Checking For Ending Game
             for (int y = 0; y < Board.Board.GetLength(0); y++)
                 for (int x = 0; x < Board.Board.GetLength(1); x++)
-                    if (Board.Board[y, x] == ' ')
+                    if (Board.Board[y, x] == '\0')
                         return null;
 
             //Draw

@@ -13,7 +13,7 @@ namespace TTT_PCL.Implementations
 
         public bool Place(char item, S_Cordinate2D cordinate2D)
         {
-            if (Board[cordinate2D.Y, cordinate2D.X] == ' ')
+            if (Board[cordinate2D.Y, cordinate2D.X] == '\0')
             {
                 Board[cordinate2D.Y, cordinate2D.X] = item;
                 return true;
@@ -25,7 +25,7 @@ namespace TTT_PCL.Implementations
         public char Take(S_Cordinate2D cordinate2D)
         {
             char item = Board[cordinate2D.Y, cordinate2D.X];
-            Board[cordinate2D.Y, cordinate2D.X] = ' ';
+            Board[cordinate2D.Y, cordinate2D.X] = '\0';
 
             return item;
         }

@@ -19,7 +19,7 @@ namespace TTT_PCL_TEST
 
         public static C_Board Board = new C_Board(new C_BoardInitializer()
         {
-            Board = new char[3,3]
+            Board = new char[3, 3] { {'X','O' ,'X' }, { 'O', 'X', 'O' }, { 'O', 'O', 'X' } }
         });
    
         public static C_Game Game { get; } = new C_Game(new C_GameInitializer()

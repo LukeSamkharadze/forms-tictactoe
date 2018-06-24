@@ -59,8 +59,8 @@ namespace TTT_FORMS
                     X = Int32.Parse(button.Tag.ToString()[1].ToString())
                 };
 
-                if (game.Board.Place(game.WhooseTurn.Current.Sign, cordinate2D))
-                    button.Text = game.WhooseTurn.Current.Sign;
+                if (game.Board.Place(game.WhoseTurn.Current.Sign, cordinate2D))
+                    button.Text = game.WhoseTurn.Current.Sign;
 
                 game.Iterate();
                 game.CheckWinner();

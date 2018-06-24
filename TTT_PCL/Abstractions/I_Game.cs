@@ -11,7 +11,7 @@ namespace TTT_PCL.Abstractions
 
         I_Board Board { get; }
 
-        IEnumerator<I_Player> WhooseTurn { get; }
+        IEnumerator<I_Player> WhoseTurn { get; }
 
         I_Player Winner { get; }
 

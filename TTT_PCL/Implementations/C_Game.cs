@@ -23,20 +23,20 @@ namespace TTT_PCL.Implementations
 
         public bool IsGameEnded { get; private set; }
 
-        public IEnumerator<I_Player> WhooseTurn { get; private set; }
+        public IEnumerator<I_Player> WhoseTurn { get; private set; }
 
         public event EventHandler onEnd;
 
         public I_Player Iterate()
         {
-            if (WhooseTurn.MoveNext() == false)
+            if (WhoseTurn.MoveNext() == false)
             {
-                WhooseTurn = Players.GetEnumerator();
-                WhooseTurn.MoveNext();
-                return WhooseTurn.Current;
+                WhoseTurn = Players.GetEnumerator();
+                WhoseTurn.MoveNext();
+                return WhoseTurn.Current;
             }
 
-            return WhooseTurn.Current;
+            return WhoseTurn.Current;
         }
 
         public I_Player CheckWinner()
@@ -144,8 +144,8 @@ namespace TTT_PCL.Implementations
             foreach (var playerSign in gameInitializer.PlayerSigns)
                 Players.Add(new C_Player(new C_PlayerInitializer() { Sign = playerSign, Game = this }));
 
-            WhooseTurn = Players.GetEnumerator();
-            WhooseTurn.MoveNext();
+            WhoseTurn = Players.GetEnumerator();
+            WhoseTurn.MoveNext();
 
             MinToWin = gameInitializer.MinToWin;
 

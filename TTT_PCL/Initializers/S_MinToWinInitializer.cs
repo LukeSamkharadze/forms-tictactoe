@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TTT_PCL.Other
+namespace TTT_PCL.Initializers
 {
-    public struct S_MinToWin
+    public class S_MinToWinInitializer
     {
         public int MinToWinHorizontally { get; set; }
 

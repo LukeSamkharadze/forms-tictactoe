@@ -144,6 +144,9 @@ namespace TTT_PCL.Implementations
             foreach (var playerSign in gameInitializer.PlayerSigns)
                 Players.Add(new C_Player(new C_PlayerInitializer() { Sign = playerSign, Game = this }));
 
+            WhooseTurn = Players.GetEnumerator();
+            WhooseTurn.MoveNext();
+
             MinToWin = gameInitializer.MinToWin;
 
             Board = new C_Board(gameInitializer.boardInitializer);

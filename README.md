@@ -13,8 +13,6 @@ You have to tag every single button according to their position in the Forms
 
 3
 
-.
-
 Y
 
 Use "PlayButton'ID'" while naming play buttons;

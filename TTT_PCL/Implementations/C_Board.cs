@@ -1,34 +1,33 @@
 ﻿using System;
 
 using TTT_PCL.Abstractions;
-using TTT_PCL.Abstractions.Board;
-
 using TTT_PCL.Initializers;
-using TTT_PCL.Abstractions.Item;
+
 using TTT_PCL.Other;
 
 namespace TTT_PCL.Implementations
 {
-    public class C_Board : I_Board
+    public sealed class C_Board : I_Board
     {
-        public I_Item[,] Board { get; private set; }
+        public char[,] Board { get; private set; }
 
-        public bool Place(I_Item item, S_Cordinate2D cordinate2D)
+        public bool Place(char item, S_Cordinate2D cordinate2D)
         {
-            if (Board[cordinate2D.Y, cordinate2D.X] == null)
+            if (Board[cordinate2D.Y, cordinate2D.X] == ' ')
             {
-                Board[cordinate2D.Y, item.Cordinate2D.X] = item;
-                item.Place(this, cordinate2D);
+                Board[cordinate2D.Y, cordinate2D.X] = item;
                 return true;
             }
 
             return false;
         }
 
-        public I_Item Take(S_Cordinate2D cordinate2D)
+        public char Take(S_Cordinate2D cordinate2D)
         {
+            char item = Board[cordinate2D.Y, cordinate2D.X];
+            Board[cordinate2D.Y, cordinate2D.X] = ' ';
 
-            return Board[cordinate2D.Y, cordinate2D.X];
+            return item;
         }
 
         public C_Board(C_BoardInitializer boardInitializer)

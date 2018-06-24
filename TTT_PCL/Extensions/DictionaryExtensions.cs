@@ -5,16 +5,16 @@ namespace TTT_PCL.Extentions
 {
     public static class DictionaryExtensions
     {
-        public static void SetupKeys<TSource1,TSource2>(this Dictionary<TSource1, TSource2> dictionary, IEnumerable<TSource1> enumerable, TSource2 defaultValue)
+        public static void SetupKeys<TSource1,TSource2>(this Dictionary<TSource1, TSource2> dictionary, IEnumerable<TSource1> keys, TSource2 defaultValue)
         {
-            foreach (var item in enumerable)
-                dictionary.Add(item,defaultValue);
+            foreach (var key in keys)
+                dictionary.Add(key, defaultValue);
         }
 
-        public static void SetupValues<TSource1, TSource2>(this Dictionary<TSource1, TSource2> dictionary, IEnumerable<TSource1> enumerable, TSource2 defaultValue)
+        public static void SetupValues<TSource1, TSource2>(this Dictionary<TSource1, TSource2> dictionary, IEnumerable<TSource1> keys, TSource2 defaultValue)
         {
-            foreach (var item in enumerable)
-                dictionary[item] = defaultValue;
+            foreach (var key in keys)
+                dictionary[key] = defaultValue;
         }
     }
 }

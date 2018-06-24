@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-using TTT_PCL.Abstractions.Player;
-using TTT_PCL.Abstractions.Board;
-using TTT_PCL.Abstractions.Game;
-using TTT_PCL.Abstractions.Item;
+
+using TTT_PCL.Abstractions;
 using TTT_PCL.Extentions;
 using TTT_PCL.Other;
 
 using TTT_PCL.Initializers;
-using TTT_PCL.Extensions;
 
 namespace TTT_PCL.Implementations
 {
-    public class C_Game : I_TTT
+    public sealed class C_Game : I_Game
     {
         public IList<I_Player> Players { get; private set; }
 
-        public S_TTTMinToWin MinToWin { get; private set; }
+        public S_MinToWin MinToWin { get; private set; }
 
         public I_Board Board { get; private set; }
 
@@ -25,143 +23,126 @@ namespace TTT_PCL.Implementations
 
         public bool IsGameEnded { get; private set; }
 
-        public I_Player WhooseTurn { get; private set; }
+        public IEnumerator<I_Player> WhooseTurn { get; private set; }
 
         public event EventHandler onEnd;
 
+        public I_Player Iterate()
+        {
+            if (WhooseTurn.MoveNext() == false)
+            {
+                WhooseTurn = Players.GetEnumerator();
+                WhooseTurn.MoveNext();
+                return WhooseTurn.Current;
+            }
+
+            return WhooseTurn.Current;
+        }
+
         public I_Player CheckWinner()
         {
-            Dictionary<I_Player, uint> counter;
-            counter = new Dictionary<I_Player, uint>();
-            counter.SetupKeys<I_Player, uint>(Players, 0);
+            List<char> CharactersOfPlayers = Players.Select(o => o.Character).ToList();
 
-            //Check Horizontally
+            Dictionary<char, int> counter = new Dictionary<char, int>();
+            counter.SetupKeys<char, int>(CharactersOfPlayers, 0);
+
+            //Checking Horizontally
             for (int y = 0; y < Board.Board.GetLength(0); y++)
-            {
                 for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinHorizontally; x++)
-                {
-                    counter.SetupValues<I_Player, uint>(Players, 0);
+                {   
+                    counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
-                        counter[Board.Board[y, x + i].Owner]++;
+                        if (Board.Board[y, x + i] != ' ')
+                            counter[Board.Board[y, x + i]]++;
 
                     foreach (var keyValue in counter)
                         if (keyValue.Value >= MinToWin.MinToWinHorizontally)
                         {
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
-                            return keyValue.Key;
+                            IsGameEnded = true;
+                            Winner = Players.First(o => o.Character == keyValue.Key);
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
+                            return Winner;
                         }
                 }
-            }
 
-            //Check Vertically
+            //Checking Vertically
             for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinVertically; y++)
-            {
                 for (int x = 0; x < Board.Board.GetLength(1); x++)
                 {
-                    counter.SetupValues<I_Player, uint>(Players, 0);
+                    counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinVertically; i++)
-                        counter[Board.Board[y + i, x].Owner]++;
+                        if (Board.Board[y + i, x] != ' ')
+                            counter[Board.Board[y + i, x]]++;
 
                     foreach (var keyValue in counter)
                         if (keyValue.Value >= MinToWin.MinToWinVertically)
                         {
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
-                            return keyValue.Key;
+                            IsGameEnded = true;
+                            Winner = Players.First(o => o.Character == keyValue.Key);
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
+                            return Winner;
                         }
                 }
-            }
 
-            //Check Diagonally
+            //Checking Diagonally
             for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinDiagonally; y++)
-            {
                 for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
                 {
-                    counter.SetupValues<I_Player, uint>(Players, 0);
+                    counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
-                    for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
-                        counter[Board.Board[y + i, x + i].Owner]++;
+                    for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
+                        if (Board.Board[y + i, x + i] != ' ')
+                            counter[Board.Board[y + i, x + i]]++;
 
                     foreach (var keyValue in counter)
                         if (keyValue.Value >= MinToWin.MinToWinDiagonally)
                         {
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
-                            return keyValue.Key;
+                            IsGameEnded = true;
+                            Winner = Players.First(o => o.Character == keyValue.Key);
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
+                            return Winner;
                         }
                 }
-            }
 
-            //Check Diagonally ^
+            //Checking Diagonally ^
             for (int y = Board.Board.GetLength(0) - 1; y >= MinToWin.MinToWinDiagonally - 1; y--)
-            {
                 for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
                 {
-                    counter.SetupValues<I_Player, uint>(Players, 0);
+                    counter.SetupValues<char, int>(CharactersOfPlayers, 0);
 
                     for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
-                        counter[Board.Board[y - i, x + i].Owner]++;
+                        if (Board.Board[y - i, x + i] != ' ')
+                            counter[Board.Board[y - i, x + i]]++;
 
                     foreach (var keyValue in counter)
                         if (keyValue.Value >= MinToWin.MinToWinDiagonally)
                         {
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = keyValue.Key });
-                            return keyValue.Key;
+                            IsGameEnded = true;
+                            Winner = Players.First(o => o.Character == keyValue.Key);
+                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
+                            return Winner;
                         }
                 }
-            }
 
-            //Check For Draw
-            bool isEverythingTaken = true;
+            //Checking For Ending Game
             for (int y = 0; y < Board.Board.GetLength(0); y++)
-            {
                 for (int x = 0; x < Board.Board.GetLength(1); x++)
-                {
-                    if (Board.Board[y, x] == null)
-                    {
-                        isEverythingTaken = false;
+                    if (Board.Board[y, x] == ' ')
                         return null;
-                    }
-                }
-            }
 
-            if(isEverythingTaken)
-            {
-                IsGameEnded = true;
-                onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = null });
-                return null;
-            }
-
+            //Draw
+            IsGameEnded = true;
+            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = null });
             return null;
         }
-
-        public bool Place(I_Item item, S_Cordinate2D cordinate2D)
-        {
-            if (Board.Place(item, cordinate2D))
-            {
-                CheckWinner();
-                Players.MoveNextOrFirst(WhooseTurn);
-                return true;
-            }
-            return false;
-        }
-
-        public I_Item Take(S_Cordinate2D cordinate2D)
-        {
-            I_Item item = Board.Take(cordinate2D);
-            CheckWinner();
-            Players.MoveNextOrFirst(WhooseTurn);
-            return item;
-        }
-
+       
         public C_Game(C_GameInitializer gameInitializer)
         {
             Players = gameInitializer.Players;
             MinToWin = gameInitializer.MinToWin;
             Board = gameInitializer.Board;
-            Winner = gameInitializer.Winner;
-            IsGameEnded = gameInitializer.IsGameEnded;
-            WhooseTurn = gameInitializer.WhooseTurn;
         }
     }
 }

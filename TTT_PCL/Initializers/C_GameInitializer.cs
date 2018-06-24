@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TTT_PCL.Abstractions.Player;
-using TTT_PCL.Abstractions.Board;
+using TTT_PCL.Abstractions;
 using TTT_PCL.Other;
 
 namespace TTT_PCL.Initializers
@@ -11,7 +10,7 @@ namespace TTT_PCL.Initializers
     {
         public IList<I_Player> Players { get; set; }
 
-        public S_TTTMinToWin MinToWin { get; set; }
+        public S_MinToWin MinToWin { get; set; }
 
         public I_Board Board { get; set; }
 

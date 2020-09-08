@@ -34,11 +34,12 @@ namespace TTT_FORMS
         {
             game = new C_Game(new C_GameInitializer()
             {
-                PlayerSigns = new List<string>() { "X" },
+                PlayerSigns = new List<string>() { "X", "O" },
                 MinToWin = new S_MinToWin(new S_MinToWinInitializer() { MinToWinHorizontally = 3, MinToWinVertically = 3, MinToWinDiagonally = 3 }),
                 boardInitializer = new C_BoardInitializer() { Dimensions = new S_Dimensions2D() { Length = 5, Width = 5 } }
             });
 
+            game.onEnd += OnEnd;
         }
 
         private void ResetTextsOnPlayButtons()

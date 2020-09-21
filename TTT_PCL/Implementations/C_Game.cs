@@ -8,6 +8,7 @@ using TTT_PCL.Extentions;
 using TTT_PCL.Other;
 
 using TTT_PCL.Initializers;
+using System.Security.AccessControl;
 
 namespace TTT_PCL.Implementations
 {
@@ -46,85 +47,50 @@ namespace TTT_PCL.Implementations
             Dictionary<string, int> counter = new Dictionary<string, int>();
             counter.SetupKeys<string, int>(PlayerSigns, 0);
 
-            //Checking Horizontally
+            Dictionary<int, int> minToWin = new Dictionary<int, int>()
+            {
+                {0, MinToWin.MinToWinHorizontally},
+                {1, MinToWin.MinToWinVertically},
+                {2, MinToWin.MinToWinDiagonally}
+            };
+
+            Dictionary <int, Func<int, int, int>> calculateXCordinate = new Dictionary<int, Func<int, int, int>>()
+            {
+                {0, (x, dx) => x + dx},
+                {1, (x, dx) => x},
+                {2, (x, dx) => x + dx}
+            };
+
+            Dictionary<int, Func<int, int, int>> calculateYCordinate = new Dictionary<int, Func<int, int, int>>()
+            {
+                {0, (y, dy) => y},
+                {1, (y, dy) => y + dy},
+                {2, (y, dy) => y + dy}
+            };
+
             for (int y = 0; y < Board.Board.GetLength(0); y++)
-                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinHorizontally; x++)
-                {   
-                    counter.SetupValues<string, int>(PlayerSigns, 0);
+                for(int x = 0; x < Board.Board.GetLength(1); x++)
+                    for (int directionID = 0; directionID < 3; directionID++)
+                    {
+                        counter.SetupValues<string, int>(PlayerSigns, 0);
 
-                    for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
-                        if (Board.Board[y, x + i] != null)
-                            counter[Board.Board[y, x + i]]++;
+                        for (int dyx = 0;
+                            dyx < minToWin[directionID] &&
+                            calculateYCordinate[directionID](y, dyx) < Board.Board.GetLength(0) &&
+                            calculateXCordinate[directionID](x, dyx) < Board.Board.GetLength(1);
+                            dyx++)
+                            if (Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)] != null)
+                                counter[Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)]]++;
 
-                    foreach (var keyValue in counter)
-                        if (keyValue.Value >= MinToWin.MinToWinHorizontally)
-                        {
-                            IsGameEnded = true;
-                            Winner = Players.First(o => o.Sign == keyValue.Key);
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
-                            return Winner;
-                        }
-                }
-
-            //Checking Vertically
-            for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinVertically; y++)
-                for (int x = 0; x < Board.Board.GetLength(1); x++)
-                {
-                    counter.SetupValues<string, int>(PlayerSigns, 0);
-
-                    for (int i = 0; i < MinToWin.MinToWinVertically; i++)
-                        if (Board.Board[y + i, x] != null)
-                            counter[Board.Board[y + i, x]]++;
-
-                    foreach (var keyValue in counter)
-                        if (keyValue.Value >= MinToWin.MinToWinVertically)
-                        {
-                            IsGameEnded = true;
-                            Winner = Players.First(o => o.Sign == keyValue.Key);
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
-                            return Winner;
-                        }
-                }
-
-            //Checking Diagonally
-            for (int y = 0; y <= Board.Board.GetLength(0) - MinToWin.MinToWinDiagonally; y++)
-                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
-                {
-                    counter.SetupValues<string, int>(PlayerSigns, 0);
-
-                    for (int i = 0; i < MinToWin.MinToWinHorizontally; i++)
-                        if (Board.Board[y + i, x + i] != null)
-                            counter[Board.Board[y + i, x + i]]++;
-
-                    foreach (var keyValue in counter)
-                        if (keyValue.Value >= MinToWin.MinToWinDiagonally)
-                        {
-                            IsGameEnded = true;
-                            Winner = Players.First(o => o.Sign == keyValue.Key);
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
-                            return Winner;
-                        }
-                }
-
-            //Checking Diagonally ^
-            for (int y = Board.Board.GetLength(0) - 1; y >= MinToWin.MinToWinDiagonally - 1; y--)
-                for (int x = 0; x <= Board.Board.GetLength(1) - MinToWin.MinToWinDiagonally; x++)
-                {
-                    counter.SetupValues<string, int>(PlayerSigns, 0);
-
-                    for (int i = 0; i < MinToWin.MinToWinDiagonally; i++)
-                        if (Board.Board[y - i, x + i] != null)
-                            counter[Board.Board[y - i, x + i]]++;
-
-                    foreach (var keyValue in counter)
-                        if (keyValue.Value >= MinToWin.MinToWinDiagonally)
-                        {
-                            IsGameEnded = true;
-                            Winner = Players.First(o => o.Sign == keyValue.Key);
-                            onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
-                            return Winner;
-                        }
-                }
+                        foreach (var keyValue in counter)
+                            if (keyValue.Value >= minToWin[directionID])
+                            {
+                                IsGameEnded = true;
+                                Winner = Players.First(o => o.Sign == keyValue.Key);
+                                onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = Winner });
+                                return Winner;
+                            }
+                    }
 
             //Checking For Ending Game
             for (int y = 0; y < Board.Board.GetLength(0); y++)

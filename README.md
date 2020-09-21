@@ -1,1 +1,1 @@
-Just a simple 5x5 Tic-Tac-Toe game
+Just a simple NxN Tic-Tac-Toe game

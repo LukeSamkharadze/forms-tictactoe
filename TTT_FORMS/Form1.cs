@@ -27,7 +27,6 @@ namespace TTT_FORMS
             buttons = new List<Button>();
             AssignEventsOnPlayButtons();
             ResetGame();
-            game.onEnd += OnEnd;
         }
 
         private void ResetGame()

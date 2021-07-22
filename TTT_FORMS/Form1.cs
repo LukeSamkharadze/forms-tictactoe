@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TTT_PCL.Implementations;
@@ -23,7 +19,7 @@ namespace TTT_FORMS
         public Form1()
         {
             InitializeComponent();
-      
+
             buttons = new List<Button>();
             AssignEventsOnPlayButtons();
             ResetGame();
@@ -43,13 +39,13 @@ namespace TTT_FORMS
 
         private void ResetTextsOnPlayButtons()
         {
-            foreach (var button in buttons)
+            foreach(var button in buttons)
                 button.Text = null;
         }
 
         private void ButtonClick(object sender, EventArgs eventArgs)
         {
-            if (game.IsGameEnded == false)
+            if(game.IsGameEnded == false)
             {
                 Button button = sender as Button;
 
@@ -59,7 +55,7 @@ namespace TTT_FORMS
                     X = Int32.Parse(button.Tag.ToString()[1].ToString())
                 };
 
-                if (game.Board.Place(game.WhoseTurn.Current.Sign, cordinate2D))
+                if(game.Board.Place(game.WhoseTurn.Current.Sign, cordinate2D))
                     button.Text = game.WhoseTurn.Current.Sign;
 
                 game.Iterate();
@@ -74,7 +70,7 @@ namespace TTT_FORMS
 
         private void AssignEventsOnPlayButtons()
         {
-            foreach (var button in this.Controls.OfType<Button>().Where(o => o.Name?.ToString().Contains("PlayButton") == true))
+            foreach(var button in this.Controls.OfType<Button>().Where(o => o.Name?.ToString().Contains("PlayButton") == true))
             {
                 buttons.Add(button);
                 button.Click += ButtonClick;

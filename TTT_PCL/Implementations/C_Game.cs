@@ -45,39 +45,43 @@ namespace TTT_PCL.Implementations
             List<string> PlayerSigns = Players.Select(o => o.Sign).ToList();
 
             Dictionary<string, int> counter = new Dictionary<string, int>();
-            counter.SetupKeys<string, int>(PlayerSigns, 0);
+            counter.SetupKeys(PlayerSigns, 0);
 
             Dictionary<int, int> minToWin = new Dictionary<int, int>()
             {
                 {0, MinToWin.MinToWinHorizontally},
                 {1, MinToWin.MinToWinVertically},
-                {2, MinToWin.MinToWinDiagonally}
+                {2, MinToWin.MinToWinDiagonally},
+                {3, MinToWin.MinToWinDiagonally}
             };
 
             Dictionary <int, Func<int, int, int>> calculateXCordinate = new Dictionary<int, Func<int, int, int>>()
             {
                 {0, (x, dx) => x + dx},
                 {1, (x, dx) => x},
-                {2, (x, dx) => x + dx}
+                {2, (x, dx) => x + dx},
+                {3, (x, dx) => x + dx}
             };
 
             Dictionary<int, Func<int, int, int>> calculateYCordinate = new Dictionary<int, Func<int, int, int>>()
             {
                 {0, (y, dy) => y},
                 {1, (y, dy) => y + dy},
-                {2, (y, dy) => y + dy}
+                {2, (y, dy) => y + dy},
+                {3, (y, dy) => y - dy}
             };
 
             for (int y = 0; y < Board.Board.GetLength(0); y++)
                 for(int x = 0; x < Board.Board.GetLength(1); x++)
-                    for (int directionID = 0; directionID < 3; directionID++)
+                    for (int directionID = 0; directionID < 4; directionID++)
                     {
                         counter.SetupValues<string, int>(PlayerSigns, 0);
 
-                        for (int dyx = 0;
+                        for(int dyx = 0;
                             dyx < minToWin[directionID] &&
                             calculateYCordinate[directionID](y, dyx) < Board.Board.GetLength(0) &&
-                            calculateXCordinate[directionID](x, dyx) < Board.Board.GetLength(1);
+                            calculateXCordinate[directionID](x, dyx) < Board.Board.GetLength(1) &&
+                            calculateYCordinate[directionID](y, dyx) >= 0;
                             dyx++)
                             if (Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)] != null)
                                 counter[Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)]]++;

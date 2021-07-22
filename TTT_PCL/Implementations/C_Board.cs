@@ -1,6 +1,4 @@
-﻿using System;
-
-using TTT_PCL.Abstractions;
+﻿using TTT_PCL.Abstractions;
 using TTT_PCL.Initializers;
 
 using TTT_PCL.Other;
@@ -13,7 +11,7 @@ namespace TTT_PCL.Implementations
 
         public bool Place(string item, S_Cordinate2D cordinate2D)
         {
-            if (Board[cordinate2D.Y, cordinate2D.X] == null)
+            if(Board[cordinate2D.Y, cordinate2D.X] == null)
             {
                 Board[cordinate2D.Y, cordinate2D.X] = item;
                 return true;

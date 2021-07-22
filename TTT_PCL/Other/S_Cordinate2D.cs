@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TTT_PCL.Other
+﻿namespace TTT_PCL.Other
 {
     public struct S_Cordinate2D
     {

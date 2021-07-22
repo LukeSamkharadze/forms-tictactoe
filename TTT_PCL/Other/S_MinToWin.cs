@@ -1,6 +1,4 @@
-﻿using System;
-
-using TTT_PCL.Initializers;
+﻿using TTT_PCL.Initializers;
 
 namespace TTT_PCL.Other
 {

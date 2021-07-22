@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TTT_PCL.Initializers
+﻿namespace TTT_PCL.Initializers
 {
     public class S_MinToWinInitializer
     {

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-
 using TTT_PCL.Abstractions;
 using TTT_PCL.Extentions;
-using TTT_PCL.Other;
-
 using TTT_PCL.Initializers;
-using System.Security.AccessControl;
+using TTT_PCL.Other;
 
 namespace TTT_PCL.Implementations
 {
@@ -30,7 +26,7 @@ namespace TTT_PCL.Implementations
 
         public I_Player Iterate()
         {
-            if (WhoseTurn.MoveNext() == false)
+            if(WhoseTurn.MoveNext() == false)
             {
                 WhoseTurn = Players.GetEnumerator();
                 WhoseTurn.MoveNext();
@@ -55,7 +51,7 @@ namespace TTT_PCL.Implementations
                 {3, MinToWin.MinToWinDiagonally}
             };
 
-            Dictionary <int, Func<int, int, int>> calculateXCordinate = new Dictionary<int, Func<int, int, int>>()
+            Dictionary<int, Func<int, int, int>> calculateXCordinate = new Dictionary<int, Func<int, int, int>>()
             {
                 {0, (x, dx) => x + dx},
                 {1, (x, dx) => x},
@@ -71,9 +67,9 @@ namespace TTT_PCL.Implementations
                 {3, (y, dy) => y - dy}
             };
 
-            for (int y = 0; y < Board.Board.GetLength(0); y++)
+            for(int y = 0; y < Board.Board.GetLength(0); y++)
                 for(int x = 0; x < Board.Board.GetLength(1); x++)
-                    for (int directionID = 0; directionID < 4; directionID++)
+                    for(int directionID = 0; directionID < 4; directionID++)
                     {
                         counter.SetupValues<string, int>(PlayerSigns, 0);
 
@@ -83,11 +79,11 @@ namespace TTT_PCL.Implementations
                             calculateXCordinate[directionID](x, dyx) < Board.Board.GetLength(1) &&
                             calculateYCordinate[directionID](y, dyx) >= 0;
                             dyx++)
-                            if (Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)] != null)
+                            if(Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)] != null)
                                 counter[Board.Board[calculateYCordinate[directionID](y, dyx), calculateXCordinate[directionID](x, dyx)]]++;
 
-                        foreach (var keyValue in counter)
-                            if (keyValue.Value >= minToWin[directionID])
+                        foreach(var keyValue in counter)
+                            if(keyValue.Value >= minToWin[directionID])
                             {
                                 IsGameEnded = true;
                                 Winner = Players.First(o => o.Sign == keyValue.Key);
@@ -97,9 +93,9 @@ namespace TTT_PCL.Implementations
                     }
 
             //Checking For Ending Game
-            for (int y = 0; y < Board.Board.GetLength(0); y++)
-                for (int x = 0; x < Board.Board.GetLength(1); x++)
-                    if (Board.Board[y, x] == null)
+            for(int y = 0; y < Board.Board.GetLength(0); y++)
+                for(int x = 0; x < Board.Board.GetLength(1); x++)
+                    if(Board.Board[y, x] == null)
                         return null;
 
             //Draw
@@ -107,11 +103,11 @@ namespace TTT_PCL.Implementations
             onEnd?.Invoke(this, new C_GameEndEventArgs() { Winner = null });
             return null;
         }
-       
+
         public C_Game(C_GameInitializer gameInitializer)
         {
             Players = new List<I_Player>();
-            foreach (var playerSign in gameInitializer.PlayerSigns)
+            foreach(var playerSign in gameInitializer.PlayerSigns)
                 Players.Add(new C_Player(new C_PlayerInitializer() { Sign = playerSign, Game = this }));
 
             WhoseTurn = Players.GetEnumerator();

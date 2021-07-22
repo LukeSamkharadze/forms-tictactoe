@@ -43,7 +43,6 @@
     <Compile Include="Abstractions\I_Board.cs" />
     <Compile Include="Abstractions\I_Game.cs" />
     <Compile Include="Abstractions\I_Player.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Implementations\C_Board.cs" />
     <Compile Include="Implementations\C_Game.cs" />
